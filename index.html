@@ -3,323 +3,358 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marita - Panel Kawaii Mágico</title>
+    <title>Marita - Panel Kawaii</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
     <style>
-        /* Cursor personalizado de corazón con parpadeo */
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff9ecd' stroke='%23b19cd9' stroke-width='2' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E"), auto !important;
+        }
+
+        body {
             background-color: #000;
+            background-image: url('https://xatimg.com/image/sVp4PkQHEywp.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Quicksand', sans-serif;
             color: #fff;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            position: relative;
             overflow-x: hidden;
-            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23dda0dd' stroke='%2387ceeb' stroke-width='1.5' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'%3E%3Canimate attributeName='fill' values='%23dda0dd;%23ffb6c1;%2387ceeb;%23dda0dd' dur='1.5s' repeatCount='indefinite'/></svg>"), auto;
         }
 
-        /* Fondo con imagen y opacidad de 80% sobre fondo negro y lluvia de corazones */
-        .bg-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://xatimg.com/image/sVp4PkQHEywp.png');
-            background-size: cover;
-            background-position: center;
-            z-index: -2;
+        /* Capa oscura con opacidad del 80% sobre el fondo */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.80);
+            z-index: -1;
+        }
+
+        /* Puntos lila, azul y rosa de fondo */
+        .dots-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(#b19cd9 2px, transparent 2px), radial-gradient(#87ceeb 2px, transparent 2px), radial-gradient(#ff9ecd 2px, transparent 2px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px, 12px 37px;
+            opacity: 0.3;
+            z-index: -1;
         }
 
         /* Lluvia de corazones rosita bajito */
-        .hearts-rain {
+        .heart-rain {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .heart {
-            position: absolute;
             top: -10vh;
             color: #ffb6c1;
-            font-size: 20px;
+            font-size: 1.2rem;
+            user-select: none;
+            z-index: 0;
             animation: fall linear infinite;
-            opacity: 0.8;
         }
 
         @keyframes fall {
-            0% { transform: translateY(-10vh) rotate(0deg); }
-            100% { transform: translateY(110vh) rotate(360deg); }
-        }
-
-        /* Contenedores generales e independientes */
-        .container {
-            width: 90%;
-            max-width: 420px;
-            background: rgba(15, 10, 25, 0.85);
-            border: 2px solid #87ceeb;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 0 20px rgba(221, 160, 221, 0.4);
-            text-align: center;
-            box-sizing: border-box;
-            backdrop-filter: blur(5px);
-            margin: 20px 0;
-        }
-
-        .hidden {
-            display: none !important;
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
 
         /* Panel de Contraseña */
-        h2.title-glow {
-            font-style: italic;
-            font-size: 28px;
-            animation: colorBlink 2s infinite;
+        #auth-panel {
+            background: rgba(15, 15, 15, 0.9);
+            border: 2px solid #b19cd9;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(177, 156, 217, 0.5);
+            max-width: 380px;
+            width: 90%;
+            z-index: 10;
+        }
+
+        #auth-panel h2 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
             margin-bottom: 20px;
+            animation: titleBlink 2s infinite;
         }
 
-        @keyframes colorBlink {
-            0% { color: #dda0dd; text-shadow: 0 0 10px #dda0dd; }
+        @keyframes titleBlink {
+            0% { color: #b19cd9; text-shadow: 0 0 10px #b19cd9; }
             33% { color: #87ceeb; text-shadow: 0 0 10px #87ceeb; }
-            66% { color: #ffb6c1; text-shadow: 0 0 10px #ffb6c1; }
-            100% { color: #dda0dd; text-shadow: 0 0 10px #dda0dd; }
+            66% { color: #ff9ecd; text-shadow: 0 0 10px #ff9ecd; }
+            100% { color: #b19cd9; text-shadow: 0 0 10px #b19cd9; }
         }
 
-        .password-box {
+        .input-container {
             position: relative;
             margin-bottom: 20px;
         }
 
-        .password-box input {
+        #auth-panel input {
             width: 100%;
             padding: 12px 40px 12px 15px;
             border-radius: 10px;
-            border: 1px solid #dda0dd;
-            background: rgba(0,0,0,0.6);
-            color: #dda0dd;
-            font-size: 16px;
-            box-sizing: border-box;
+            border: 1px solid #b19cd9;
+            background: #1a1a1a;
+            color: #b19cd9;
+            font-size: 1rem;
             outline: none;
         }
 
         .toggle-eye {
             position: absolute;
-            right: 12px;
+            right: 15px;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            color: #dda0dd;
-            font-size: 18px;
-            user-select: none;
+            color: #b19cd9;
         }
 
-        .btn-entrar {
-            background: linear-gradient(45deg, #dda0dd, #87ceeb);
+        #auth-panel button {
+            background: #b19cd9;
+            color: #fff;
             border: none;
-            color: #000;
-            padding: 12px 30px;
-            font-size: 16px;
+            padding: 10px 25px;
+            border-radius: 10px;
+            font-size: 1rem;
             font-weight: bold;
-            border-radius: 25px;
             cursor: pointer;
             transition: 0.3s;
-            box-shadow: 0 0 10px rgba(135, 206, 235, 0.6);
         }
 
-        .btn-entrar:hover {
-            transform: scale(1.05);
-            background: linear-gradient(45deg, #ffb6c1, #dda0dd);
+        #auth-panel button:hover {
+            background: #ff9ecd;
+            box-shadow: 0 0 10px #ff9ecd;
         }
 
-        /* Sección de Perfil (Compacta, independiente y con contorno parpadeante) */
-        .profile-card {
-            border: 3px dashed transparent;
-            border-radius: 20px;
-            animation: profileBorderBlink 3s infinite;
+        .error-msg {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Contenido Principal (Oculto inicialmente) */
+        #main-content {
+            display: none;
+            width: 100%;
+            max-width: 600px;
             padding: 20px;
-            background: rgba(10, 5, 15, 0.9);
+            z-index: 10;
         }
 
-        @keyframes profileBorderBlink {
-            0% { border-color: #ffb6c1; box-shadow: 0 0 15px #ffb6c1; }
-            33% { border-color: #dda0dd; box-shadow: 0 0 15px #dda0dd; }
-            66% { border-color: #87ceeb; box-shadow: 0 0 15px #87ceeb; }
-            100% { border-color: #ffb6c1; box-shadow: 0 0 15px #ffb6c1; }
+        /* Secciones independientes y compactas */
+        .section-box {
+            background: rgba(20, 20, 20, 0.85);
+            border: 1px solid rgba(177, 156, 217, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        /* Círculo de la foto con borde punteado giratorio y foto parpadeante */
-        .avatar-container {
+        /* Cabecera / Reloj */
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #ffb6c1;
+        }
+
+        /* Sección de Perfil Compacta */
+        .profile-container {
+            text-align: center;
+        }
+
+        .avatar-wrapper {
+            position: relative;
             width: 110px;
             height: 110px;
             margin: 0 auto 15px auto;
             border-radius: 50%;
-            background: #fff;
-            padding: 4px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            animation: spinBorder 8s linear infinite;
+            justify-content: center;
+            animation: rotateBorder 4s linear infinite;
+            background: linear-gradient(45deg, #87ceeb, #b19cd9, #ff9ecd);
+            box-shadow: 0 0 15px rgba(255, 158, 205, 0.6);
         }
 
-        @keyframes spinBorder {
-            0% { box-shadow: 0 0 0 4px #87ceeb, 0 0 0 8px transparent; transform: rotate(0deg); }
-            50% { box-shadow: 0 0 0 4px #dda0dd, 0 0 0 8px transparent; }
-            100% { box-shadow: 0 0 0 4px #ffb6c1, 0 0 0 8px transparent; transform: rotate(360deg); }
+        @keyframes rotateBorder {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
         }
 
-        .avatar {
+        .avatar-inner {
             width: 100px;
             height: 100px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .avatar-inner img {
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             object-fit: cover;
             animation: photoBlink 1.5s infinite alternate;
         }
 
         @keyframes photoBlink {
-            0% { opacity: 0.5; }
+            0% { opacity: 0.6; }
             100% { opacity: 1; }
         }
 
         .profile-name {
-            font-size: 20px;
-            font-weight: bold;
-            color: #dda0dd;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffb6c1;
             margin-bottom: 5px;
         }
 
         .profile-bio {
-            font-size: 13px;
-            color: #ffb6c1;
+            font-size: 0.9rem;
+            color: #e0e0e0;
             margin-bottom: 15px;
             line-height: 1.4;
         }
 
-        /* Bloques / Secciones independientes y pequeñas */
-        .grid-stats {
+        /* Estadísticas compactas */
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            margin-bottom: 15px;
+            margin-top: 15px;
         }
 
-        .stat-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(221, 160, 221, 0.3);
-            border-radius: 12px;
-            padding: 10px;
+        .stat-card {
+            background: rgba(30, 30, 30, 0.6);
+            border: 1px solid #b19cd9;
+            padding: 10px 5px;
+            border-radius: 10px;
             text-align: center;
         }
 
-        .stat-box h4 {
-            margin: 0;
-            font-size: 16px;
+        .stat-card .number {
+            font-weight: bold;
             color: #87ceeb;
+            font-size: 1rem;
         }
 
-        .stat-box p {
-            margin: 5px 0 0 0;
-            font-size: 12px;
-            color: #fff;
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: #ccc;
+            margin-top: 2px;
         }
 
-        /* Reloj y Fecha (Zona Horaria America/Mexico_City) */
-        .clock-box {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px dashed #dda0dd;
-            border-radius: 10px;
-            padding: 8px;
-            font-size: 13px;
-            color: #dda0dd;
-            margin-top: 10px;
+        /* Signo Zodiacal */
+        .zodiac-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #ff9ecd;
+            font-weight: 600;
         }
 
         /* Pie de página */
         footer {
-            margin-top: 15px;
-            font-size: 11px;
-            color: #ffffff;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #fff;
+            margin-top: 10px;
+            padding-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-overlay"></div>
+    <div class="dots-bg"></div>
 
-    <div class="hearts-rain" id="heartsRain"></div>
-
-    <div class="container" id="loginPanel">
-        <h2 class="title-glow">Marita</h2>
-        <div class="password-box">
-            <input type="password" id="passInput" placeholder="Contraseña (9070)">
+    <div id="auth-panel">
+        <h2>Marita</h2>
+        <div class="input-container">
+            <input type="password" id="password-input" placeholder="Contraseña (9070)">
             <span class="toggle-eye" onclick="togglePassword()">👁️</span>
         </div>
-        <button class="btn-entrar" onclick="checkPassword()">Entrar</button>
-        <p id="errorMsg" style="color: #ff6b6b; font-size: 12px; margin-top: 10px; display: none;">Contraseña incorrecta, intenta de nuevo.</p>
+        <button onclick="checkPassword()">Entrar</button>
+        <div id="error-message" class="error-msg">Contraseña incorrecta. Intenta de nuevo.</div>
     </div>
 
-    <div class="container hidden" id="profilePanel">
-        <div class="profile-card">
-            <div class="avatar-container">
-                <img src="https://xatimg.com/image/MjxtztH9qgVR.png" alt="Perfil Marita" class="avatar">
+    <div id="main-content">
+        
+        <div class="section-box header-section">
+            <span>✨ Panel Kawaii</span>
+            <span id="live-clock">Cargando hora...</span>
+        </div>
+
+        <div class="section-box profile-container">
+            <div class="avatar-wrapper">
+                <div class="avatar-inner">
+                    <img src="https://xatimg.com/image/MjxtztH9qgVR.png" alt="Foto de Perfil">
+                </div>
             </div>
-            
             <div class="profile-name">✦@Marita✦</div>
             <div class="profile-bio">
                 ✨ Conquistando el mundo.✨<br>
                 Un espacio lleno de Misterio, Dulzura y Magia.
             </div>
 
-            <div class="grid-stats">
-                <div class="stat-box">
-                    <h4>9999</h4>
-                    <p>Poder Mágico</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="number">9999</div>
+                    <div class="label">Poder Mágico</div>
                 </div>
-                <div class="stat-box">
-                    <h4>15.8K</h4>
-                    <p>Seguidores</p>
+                <div class="stat-card">
+                    <div class="number">15.8K</div>
+                    <div class="label">Seguidores</div>
                 </div>
-                <div class="stat-box">
-                    <h4>200% 💖</h4>
-                    <p>Amor</p>
-                </div>
-                <div class="stat-box">
-                    <h4>🏹 Sagitario</h4>
-                    <p>Signo Zodiacal</p>
+                <div class="stat-card">
+                    <div class="number">200% 💖</div>
+                    <div class="label">Amor</div>
                 </div>
             </div>
-
-            <div class="clock-box" id="mexicoClock">
-                Cargando hora...
-            </div>
-
-            <footer>@Dulcinea Hechizera 💖</footer>
         </div>
+
+        <div class="section-box zodiac-box">
+            <span>🏹 Signo Zodiacal: Sagitario</span>
+        </div>
+
+        <footer>
+            @Dulcinea Hechizera 💖
+        </footer>
     </div>
 
     <script>
-        /* Generar lluvia de corazones dinámicos */
-        const rainContainer = document.getElementById('heartsRain');
-        for (let i = 0; i < 25; i++) {
+        // Lluvia de corazones dinámicos
+        function createHearts() {
             const heart = document.createElement('div');
-            heart.classList.add('heart');
+            heart.classList.add('heart-rain');
             heart.innerHTML = '💖';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
-            heart.style.animationDelay = (Math.random() * 5) + 's';
-            rainContainer.appendChild(heart);
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
         }
+        setInterval(createHearts, 300);
 
-        /* Ver / Ocultar contraseña con el icono de ojo */
+        // Mostrar / Ocultar Contraseña
         function togglePassword() {
-            const input = document.getElementById('passInput');
+            const input = document.getElementById('password-input');
             if (input.type === 'password') {
                 input.type = 'text';
             } else {
@@ -327,28 +362,32 @@
             }
         }
 
-        /* Validar contraseña */
+        // Validación de Contraseña
         function checkPassword() {
-            const pass = document.getElementById('passInput').value;
+            const pass = document.getElementById('password-input').value;
+            const errorMsg = document.getElementById('error-message');
             if (pass === '9070') {
-                document.getElementById('loginPanel').classList.add('hidden');
-                document.getElementById('profilePanel').classList.remove('hidden');
+                document.getElementById('auth-panel').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
             } else {
-                const err = document.getElementById('errorMsg');
-                err.style.display = 'block';
+                errorMsg.style.display = 'block';
             }
         }
 
-        /* Actualizar reloj en vivo para America/Mexico_City (Solo hora y día) */
+        // Reloj en vivo Zona Horaria America/Mexico_City (UTC-6)
         function updateClock() {
-            const optionsTime = { timeZone: 'America/Mexico_City', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-            const optionsDate = { timeZone: 'America/Mexico_City', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('es-MX', optionsTime);
-            const dateString = now.toLocaleDateString('es-MX', optionsDate);
-            
-            document.getElementById('mexicoClock').innerHTML = `📅 ${dateString}<br>⏰ ${timeString}`;
+            const options = { 
+                timeZone: 'America/Mexico_City', 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            };
+            const now = new Date().toLocaleString('es-MX', options);
+            document.getElementById('live-clock').innerText = now;
         }
         setInterval(updateClock, 1000);
         updateClock();
